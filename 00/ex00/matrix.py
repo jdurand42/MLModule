@@ -102,7 +102,10 @@ class Vector(Matrix):
 					for el in arg:
 						if len(el) > 1:
 							raise TypeError("Error: vector must be of shpe (1 * n) or (n * 1)")
-				super().__init__(arg)
+			elif isinstance(arg, tuple):
+				if len(arg) != 2 or 1 not in arg:
+					raise TypeError("Error: vector must be of shpe (1 * n) or (n * 1)")
+			super().__init__(arg)
 		except:
 			raise TypeError("Error: Vector arg must be of the form [[]] and of shape (1 * n) or (n * 1)")
 

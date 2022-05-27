@@ -1,131 +1,85 @@
 from matrix import Matrix
 from matrix import Vector
 
-m = Matrix([[1,2,3], [1, 2, 3]])
-print(str(m))
-m = Matrix([[1,2,3, 4], [1, 2, 3, 4]])
-print(str(m))
-m = Matrix([[1], [2]])
-print(str(m))
-m = Matrix([[1]])
-print(str(m))
-m = Matrix([[]])
-print(str(m))
-# m = Matrix([])
-# print(str(m))
+def assert_test(f, good, error):
+	try:
+		f()
+		print(good)
+	except:
+		# print(e)
+		print(error)
 
-m = Matrix((1, 1))
-print(str(m))
-m = Matrix((2, 1))
-print(str(m))
-m = Matrix((5, 5))
-print(str(m))
-m = Matrix((4, 0))
-print(str(m))
+def assert_error(f, excepted_e):
+	try:
+		f()
+	except e:
+		assert e == excepted_e
 
-m = Matrix((3, 1))
-print(str(m))
+def test_init_matrix():
+	m_1_3 = [[1.0, 2.0, 3.0]]
+	m_2_3 = [[1.0, 2.0, 3.0], [3.0, 2.0, 1.0]]
+	m = Matrix(m_1_3)
+	m2 = Matrix(m_2_3)
+	assert m_1_3 == m.data
+	assert m_2_3 == m2.data
+	assert m.shape == (1, 3)
+	assert m2.shape == (2, 3)
+	assert Matrix((1, 2)).shape == (1, 2)
+	assert Matrix((1, 2)).data[0][0] == 0
 
-m = Matrix((1, 10))
-print(str(m))
+	m3 = Matrix((10, 10))
+	for i in range(0, len(m3.data)):
+		for j in range(0, len(m3.data[i])):
+			assert m3.data[i][j] == 0
 
-# try:
-# m = Matrix([])
-	# assert False
-# except:
-	# assert True
-	# pass
+	m = Matrix([[]])
+	assert m.shape == (1, 0)
+	assert m.data == [[]]
 
-# try:
-# m = Matrix([1, 2, 3])
-	# assert False
-# except:
-	# pass
+def test_init_vector():
+	v = Vector([[1, 2, 3]])
+	assert v.shape == (1, 3)
+	assert v.data == [[1, 2, 3]]
+	assert isinstance(v, Vector)
+	v = Vector([[1], [2], [3]])
+	assert v.data == [[1], [2], [3]]
+	assert v.shape == (3, 1)
+	assert isinstance(v, Vector)
 
-# try:
-	# assert False
-# m = Matrix([[1, 2, 3], [1, 2]])
-	# assert False
-# except:
-	# pass
+	v = Vector((1, 3))
+	# print(v.shape)
+	# print(v.data)
+	assert v.shape == (1, 3)
+	assert v.data == [[0, 0, 0]]
+	assert isinstance(v, Vector)
 
-m = Matrix([[1,2,3], [1, 2, 3]])
-print(str(m))
-m2 = Matrix([[1, 1, 1], [2, 2, 2]])
-print(str(m2))
-m3 = m + m2
-print(str(m3))
+	v = Vector((3, 1))
+	# print(v.shape)
+	# print(v.data)
+	assert v.shape == (3, 1)
+	assert v.data == [[0], [0], [0]]
+	assert isinstance(v, Vector)
 
-m = Matrix([[1,2,3], [1, 2, 3]])
-print(str(m))
-m2 = Matrix([[1, 1, 1], [2, 2, 2]])
-print(str(m2))
-m3 = m - m2
-print(str(m3))
+def test_magic_matrixes():
+	m = Matrix([[1, 1, 1]])
+	m2 = Matrix([[3, 3, 3]])
+	mb = m + m2
+	assert mb.data == [[4, 4, 4]]
+	assert mb.shape == (1, 3)
+	assert m.data == [[1, 1, 1]]
+	m = Matrix([[1, 1, 1], [1, 1, 1]])
+	m2 = Matrix([[3, 3, 3], [3, 3, 3]])
+	mb = m + m2
+	assert mb.data == [[4, 4, 4], [4, 4, 4]]
+	assert mb.shape == (2, 3)
+	assert m.data == [[1, 1, 1], [1, 1, 1]]
 
-m4 = m3 * 2
 
-print(str(m4))
-m4 = 2 * m3
-print(str(m4))
-
-m4 += m
-print(str(m4))
-m4 -= m
-print(str(m4))
-m4 - m
-print(str(m4))
-
-m5 = m / 2
-print(str(m5))
-m /= 2
-print(str(m))
-m /= 2
-print(str(m))
-
-print("--- VEctors ---")
-v = Vector([[1], [2], [3]])
-print(str(v))
-v2 = Vector([[1, 2, 3]])
-print(str(v2))
-# v2 = Vector([[1, 2, 3], [1, 2, 3]])
-# print(str(v2))
-print(str(v + v))
-print(type(v + v))
-print(str(v - v))
-print(type(v - v))
-v3 = Vector([[2], [2], [2]])
-v += v3
-print(str(v))
-print(type(v))
-v -= v3
-print(str(v))
-print(type(v))
-print(str(v * 2))
-print(str(v / 2))
-v *= 2
-print(str(v))
-v /= 2
-print(str(v))
-2 * v
-print(str(2 * v))
-2 / v
-print(str(2 / v))
-# print(1 - v)
-
-m = Matrix([[1, 1, 1], [1, 1, 1]])
-m2 = Matrix([[2, 2, 2], [2, 2, 2]])
-print(str(m + m2))
-print(str(m2 + m))
-print(str(m - m2))
-print(str(m2 - m))
-print(str(m * 2))
-print(str(2 * m))
-print(str(m / 2))
-print(str(2 / m))
-# print(str(m + 2))
-# print(str(2 + m))
-m = Matrix([[10], [10], [10]])
-print(str(m + v))
-print(str(v + m))
-# print(2 + v)
+if __name__ == "__main__":
+	print("--test init---")
+	assert_test(test_init_matrix, "Init test are good", "Error in init")
+	assert_test(test_init_vector, "Vector init test good", "Error in init test vector")
+	assert_test(test_magic_matrixes, "Magic method on matrixes good", "Error in matrix magix")
+	# assert v.shape == (1, 3)
+	# assert v.data == [[0, 0, 0]]
+	# assert isinstance(v, Vector)
