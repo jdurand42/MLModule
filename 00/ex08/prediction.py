@@ -1,6 +1,7 @@
 import numpy as np
+from tools import add_intercept
 
-def simple_predict(x, theta):
+def predict_(x, theta):
 	#  NOTE verifier check error
 	"""Computes the vector of prediction y_hat from two non-empty numpy.array.
 	Args:
@@ -18,7 +19,7 @@ def simple_predict(x, theta):
 	if type(x).__module__ != np.__name__ or type(theta).__module__ != np.__name__ or \
 	x.shape[1] != 1 or theta.shape != (2, 1) or len(x) == 0:
 		return None
-	y_pred = []
-	for i in range(0, len(x)):
-		y_pred.append([float(x[i][0] * theta[1][0] + theta[0][0])])
+
+	x = add_intercept(x)
+	y_pred = np.dot(x, theta)
 	return y_pred
