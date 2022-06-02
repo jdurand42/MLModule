@@ -72,9 +72,34 @@ class Matrix():
 					b[i].append(self.data[i][j] / n)
 		return Matrix(b)
 
+	def _mul_mat_mat(self, other):
+		if self.shape[1] != other.shape[0]:
+			raise ValueError("Error: Mat mat mul works only on (m * n) and (n * p) shapes")
+		ret = Matrix((self.shape[0], other.shape[1]))
+		b1 = []
+		for i in range(0, len(self.data)):
+			b1.append(self.data[i])
+		b2 = []
+		for j in range(0, len(other.data[0])):
+			b2.append([])
+			for i in range(0, len(other.data)):
+				b2[j].append(other.data[i][j])
+		print(b1, b2)
+		for i in range(0, len(b1)):
+			for j in len(b1[i]):
+				b1[i][j] = b1[i][j] * b2[i][j]
+		print(b1)
+		return ret
+
 	def __mul__(self, other):
 		if isinstance(other, (float, int)):
 			return self.__opscalar__(other)
+		elif isinstance(other, Matrix):
+			return self._mul_mat_mat(other)
+		elif isinstance(other, Vector):
+			return self._mul_mat_vec(other)
+		else:
+			raise TypeError("Error: Unsupported type in Matrix multiplication")
 
 	def __rmul__(self, other):
 		return self.__mul__(other)
