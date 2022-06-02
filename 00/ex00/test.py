@@ -81,6 +81,13 @@ def test_mul():
 	[4.0, 5.0],
 	[6.0, 7.0]])
 	print(m * m2)
+	print(m2 * m)
+
+	m1 = Matrix([[0.0, 1.0, 2.0],
+	[0.0, 2.0, 4.0]])
+	v1 = Vector([[1], [2], [3]])
+	print(m1 * v1)
+	print(v1 * m1)
 
 if __name__ == "__main__":
 	print("--test init---")
