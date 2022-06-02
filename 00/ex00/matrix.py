@@ -83,20 +83,18 @@ class Matrix():
 		return ret
 
 	def _mul_mat_vec(self, other):
-		print(self.shape)
-		print(other.shape)
+		# print(self.shape)
+		# print(other.shape)
 		if self.shape[1] != other.shape[0] or other.shape[1] != 1:
 			if self.shape[0] != other.shape[1] or self.shape[1] != 1:
 				raise ValueError("Error: Mat vul mul works only on (m * n) mat and (n * 1) vec shapes")
-		print(type(self))
+		# print(type(self))
 		return self._mul_mat_mat(other)
 
 	def __mul__(self, other):
 		if isinstance(other, (float, int)):
 			return self.__opscalar__(other)
-		elif isinstance(other, Matrix) and isinstance(self, Vector):
-			return self._mul_mat_vec(other)
-		elif isinstance(self, Matrix) and isinstance(other, Vector):
+		elif isinstance(other, Vector):
 			return self._mul_mat_vec(other)
 		elif isinstance(other, Matrix):
 			return self._mul_mat_mat(other)
@@ -151,10 +149,14 @@ class Vector(Matrix):
 	# 	return self.__rsub__(other)
 
 	def __mul__(self, other):
+		if isinstance(other, Matrix):
+			return other._mul_mat_vec(self)
 		return Vector(super().__mul__(other).data)
-	# 
-	# def __rmul__(self, other):
-	# 	return Vector(super().__rmul__(other).data)
+	#
+	def __rmul__(self, other):
+		if isinstance(other, Matrix):
+			return other._mul_mat_vec(self)
+		return Vector(super().__rmul__(other).data)
 
 	def __truediv__(self, other):
 		return Vector(super().__truediv__(other).data)

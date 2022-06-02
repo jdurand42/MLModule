@@ -89,6 +89,8 @@ def test_mul():
 	print(m1 * v1)
 	print(v1 * m1)
 
+	print(v1 * v1)
+
 if __name__ == "__main__":
 	print("--test init---")
 	assert_test(test_init_matrix, "Init test are good", "Error in init")
