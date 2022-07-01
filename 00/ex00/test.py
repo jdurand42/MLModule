@@ -74,12 +74,29 @@ def test_magic_matrixes():
 	assert mb.shape == (2, 3)
 	assert m.data == [[1, 1, 1], [1, 1, 1]]
 
+def test_mul():
+	m = Matrix([[0.0, 1.0, 2.0, 3.0],[0.0, 2.0, 4.0, 6.0]])
+	m2 = Matrix([[0.0, 1.0],
+	[2.0, 3.0],
+	[4.0, 5.0],
+	[6.0, 7.0]])
+	print(m * m2)
+	print(m2 * m)
+
+	m1 = Matrix([[0.0, 1.0, 2.0],
+	[0.0, 2.0, 4.0]])
+	v1 = Vector([[1], [2], [3]])
+	print(m1 * v1)
+	print(v1 * m1)
+
+	print(v1 * v1)
 
 if __name__ == "__main__":
 	print("--test init---")
 	assert_test(test_init_matrix, "Init test are good", "Error in init")
 	assert_test(test_init_vector, "Vector init test good", "Error in init test vector")
 	assert_test(test_magic_matrixes, "Magic method on matrixes good", "Error in matrix magix")
+	test_mul()
 	# assert v.shape == (1, 3)
 	# assert v.data == [[0, 0, 0]]
 	# assert isinstance(v, Vector)
