@@ -61,16 +61,20 @@ def plot_polymonial_error(regs, y, set):
 	plt.ioff()
 	plt.show()
 
-def plot_sub_graph(regs, set, x, y, feature=0):
+def unminmax(x_prime, x_true):
+	descaled = x_prime * (x_true.max() - x_true.min()) + x_true.min()
+	return descaled
+
+def plot_sub_graph(regs, set, x, y, x_true, feature=0):
 
 	plt.rcParams["figure.figsize"] = (15,7.5)
 	f, ax = plt.subplots(2, 2)
 
-	true_x = x
 	# random_x = 6 * np.random.random_sample((100, 1)) + 1
 	# x = np.concatenate((x, random_x))
 	# x = np.sort(x, axis=0)
 	# colors = ["indigo", "darkviolet", "thistle", "plum", "mediumblue", "slateblue"]
+
 	for i in range(0, len(regs)):
 		if i < 2:
 			axis_x = 0
@@ -80,11 +84,11 @@ def plot_sub_graph(regs, set, x, y, feature=0):
 			axis_y = i - 2
 		ax1 = ax[axis_x, axis_y]
 
-		ax1.scatter(x[:,[feature]], y, color="blue", label="True data")
+		ax1.scatter(unminmax(x[:,[feature]], x_true), y, color="blue", label="True data")
 
 		# x_to_pred = add_polynomial_features(x, i+1)
 		y_pred = regs[i].predict_(set[i])
-		ax1.scatter(x[:,[feature]], y_pred, color="red", label=f"Predict with {i+1}'s degree")
+		ax1.scatter(unminmax(x[:,[feature]], x_true), y_pred, color="red", label=f"Predict with {i+1}'s degree")
 		ax1.legend()
 		# ax1.xlabel("Micrograms")
 		# ax2.ylabel("Score")
@@ -108,6 +112,8 @@ print(df.head())
 y = get_numpy_feature(df, "target")
 x = get_numpy_multi_features(df, features)
 
+# print(x[:2])
+# print(unminmax(x, x_true)[:2])
 
 print("la")
 
@@ -170,8 +176,8 @@ for i in range(0, 4):
 	# plot_univariate(x, y, regs[i].predict_(set[i]), "bla", "bloe")
 
 # plot_polymonial_error(regs, y, set)
-
-plot_sub_graph(regs, test_set, x_test, y_test)
-plot_sub_graph(regs, test_set, x_test, y_test, feature=1)
-plot_sub_graph(regs, test_set, x_test, y_test, feature=2)
+#
+plot_sub_graph(regs, test_set, x_test, y_test, x_true)
+plot_sub_graph(regs, test_set, x_test, y_test, x_true, feature=1)
+plot_sub_graph(regs, test_set, x_test, y_test, x_true, feature=2)
 # plot_big_graph(regs, set, x, y)
