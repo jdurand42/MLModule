@@ -95,7 +95,16 @@ def plot_sub_graph(regs, set, x, y, x_true, feature=0):
 		ax1.legend()
 		# ax1.xlabel("Micrograms")
 		# ax2.ylabel("Score")
+	plt.ioff()
+	plt.show()
 
+def plot_3D_scatter(x, y, y_pred=None):
+	f = plt.figure("3D scatter plot")
+	ax = f.add_subplot(projection="3d")
+
+	ax.scatter(x[:,[0]], x[:,[1]], y)
+	if y_pred is not None and set is not None:
+		ax.scatter(x[:,[0]], x[:,[1]], y_pred, color="yellow")
 	plt.ioff()
 	plt.show()
 
@@ -116,11 +125,6 @@ for key in features:
 print(df.head())
 y = get_numpy_feature(df, "target")
 x = get_numpy_multi_features(df, features)
-
-# print(x[:2])
-# print(unminmax(x, x_true)[:2])
-
-print("la")
 
 x_train, x_test, y_train, y_test = data_spliter(x, y, 0.5)
 
@@ -182,7 +186,9 @@ for i in range(0, 4):
 
 # plot_polymonial_error(regs, y, set)
 #
-plot_sub_graph(regs, test_set, x_test, y_test, x_true)
-plot_sub_graph(regs, test_set, x_test, y_test, x_true, feature=1)
-plot_sub_graph(regs, test_set, x_test, y_test, x_true, feature=2)
+# plot_polymonial_error(regs, y_test, test_set)
+# plot_sub_graph(regs, test_set, x_test, y_test, x_true)
+# plot_sub_graph(regs, test_set, x_test, y_test, x_true, feature=1)
+# plot_sub_graph(regs, test_set, x_test, y_test, x_true, feature=2)
 # plot_big_graph(regs, set, x, y)
+plot_3D_scatter(x_test, y_test, regs[0].predict_(test_set[0]))
