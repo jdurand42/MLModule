@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from polynomial_model import add_polynomial_features
 from data_spliter import data_spliter
 from minmax import minmax
+from z_score import zscore
 
 def get_numpy_feature(df, key):
 	return df[key].to_numpy().reshape((len(df[key]), 1))
@@ -84,11 +85,13 @@ def plot_sub_graph(regs, set, x, y, x_true, feature=0):
 			axis_y = i - 2
 		ax1 = ax[axis_x, axis_y]
 
-		ax1.scatter(unminmax(x[:,[feature]], x_true), y, color="blue", label="True data")
+		ax1.scatter(x[:,[feature]], y, color="blue", label="True data")
+		# ax1.scatter(unminmax(x[:,[feature]], x_true), y, color="blue", label="True data")
 
 		# x_to_pred = add_polynomial_features(x, i+1)
 		y_pred = regs[i].predict_(set[i])
-		ax1.scatter(unminmax(x[:,[feature]], x_true), y_pred, color="red", label=f"Predict with {i+1}'s degree")
+		ax1.scatter(x[:,[feature]], y_pred, color="red", label=f"Predict with {i+1}'s degree")
+		# ax1.scatter(unminmax(x[:,[feature]], x_true), y_pred, color="red", label=f"Predict with {i+1}'s degree")
 		ax1.legend()
 		# ax1.xlabel("Micrograms")
 		# ax2.ylabel("Score")
@@ -107,7 +110,9 @@ x_true = get_numpy_multi_features(df, features)
 
 for key in features:
 	# print(df[key].to_numpy().r)
-	df[key] = minmax(get_numpy_feature(df, key))
+	# df[key] = minmax(get_numpy_feature(df, key))
+	df[key] = zscore(get_numpy_feature(df, key))
+
 print(df.head())
 y = get_numpy_feature(df, "target")
 x = get_numpy_multi_features(df, features)
@@ -150,7 +155,7 @@ for i in range(0, 4):
 	b = subset[0]
 	for k in range(1, len(subset)):
 		b = np.concatenate((b, subset[k]), axis=1)
-
+	print(b)
 	train_set.append(b)
 
 	subset = []
