@@ -104,7 +104,7 @@ def plot_3D_scatter(x, y, y_pred=None):
 
 	ax.scatter(x[:,[0]], x[:,[1]], y)
 	if y_pred is not None and set is not None:
-		ax.scatter(x[:,[0]], x[:,[1]], y_pred, color="yellow")
+		ax.scatter(x[:,[0]], x[:,[1]], y_pred, color="purple")
 	plt.ioff()
 	plt.show()
 
@@ -191,4 +191,4 @@ for i in range(0, 4):
 # plot_sub_graph(regs, test_set, x_test, y_test, x_true, feature=1)
 # plot_sub_graph(regs, test_set, x_test, y_test, x_true, feature=2)
 # plot_big_graph(regs, set, x, y)
-plot_3D_scatter(x_test, y_test, regs[0].predict_(test_set[0]))
+plot_3D_scatter(x_test, y_test, regs[1].predict_(test_set[1]))
