@@ -5,6 +5,7 @@ from vec_log_loss import vec_log_loss_
 # Example 1:
 y1 = np.array([1]).reshape((-1, 1))
 x1 = np.array([4]).reshape((-1, 1))
+print(x1, y1)
 theta1 = np.array([[2], [0.5]])
 y_hat1 = logistic_predict_(x1, theta1)
 print(vec_log_loss_(y1, y_hat1))

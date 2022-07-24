@@ -25,17 +25,9 @@ def vec_log_loss_(y, y_hat, eps=1e-15):
 	if y.shape[1] != 1 or y.shape != y_hat.shape:
 		return None
 
-	# j = (y * np.log(y_hat + eps) + (1 - y) * np.log(1 - (y_hat + eps)))
-	# j = -j.mean()
 	ones = np.ones(y.shape)
-	# print(y)
-	# print(y_hat)
-	# print(ones)
 	j = (np.dot(np.transpose(y), np.log(y_hat + eps)) + \
 	(np.dot(np.transpose(ones - y), np.log(ones - y_hat + eps))))
-	# print(j)
 	j = j / -len(y)
-	# print(j)
-	# j = -j
 
-	return j
+	return j.mean()
