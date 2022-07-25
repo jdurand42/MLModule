@@ -4,7 +4,7 @@ from my_logistic_regression import MyLogisticRegression as MyLR
 from data_spliter import data_spliter
 from z_score import zscore
 import matplotlib.pyplot as plt
-from mono_log import get_data, label_one_vs_all, get_numpy_feature, mono_log, binarise_y, get_absolute_score, plot_a_scatter, normalize_data
+from mono_log import get_data, label_one_vs_all, get_numpy_feature, mono_log, binarise_y, get_absolute_score, normalize_data
 
 planet_labels = ["The flying cities of Venus", "United Nations of earth", "Mars Republic", "The asteroid's belt colonies"]
 
@@ -33,6 +33,24 @@ def get_train_test(x, ys, treshold):
 		sets[i]['X_train'], sets[i]['X_test'], sets[i]['Y_train'], sets[i]['Y_test'] \
 		= data_spliter(X.to_numpy(), ys[i].to_numpy(), treshold)
 	return sets
+
+def plot_a_scatter(x, y, y_pred, features):
+	plt.rcParams["figure.figsize"] = (15,7.5)
+	f, ax = plt.subplots(3, 1)
+
+	i = 0
+	for key in features:
+		ax[i].scatter(x[:,[i]], y_pred, color="red", label="y_pred")
+		ax[i].scatter(x[:,[i]], y, color="blue", label="y_true")
+		ax[i].legend()
+		ax[i].set_title(key)
+		ax[i].set_xlabel(key)
+		ax[i].set_ylabel("Planet zipcode")
+		i += 1
+
+	# f.suptitle(f"{planet_labels[planet_code]} vs all")
+	plt.ioff()
+	plt.show()
 
 if __name__=="__main__":
 	X = get_data("./solar_system_census.csv")
@@ -79,6 +97,7 @@ if __name__=="__main__":
 	# print(final_y_pred)
 	score = get_absolute_score(Y_test, final_y_pred)
 	print(f"Score {score}")
+	plot_a_scatter(X_test, Y_test, final_y_pred, X.keys())
 	# y_pred_binary = binarise_y(y_pred, 0.5)
 
 	# plot_a_scatter(X_test, Y_test, y_pred, 0, X.keys())
