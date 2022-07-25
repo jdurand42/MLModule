@@ -23,21 +23,24 @@ def confusion_matrix_(y_true, y_hat, labels=None, df_option=False):
 	Raises:
 		This function should not raise any Exception.
 	"""
-	uni = np.unique(np.concatenate((y_true, y_hat)))
-	if labels is None:
-		labels = uni
-	dim = len(labels)
-	mat = np.zeros((dim, dim), dtype=int)
+	try:
+		uni = np.unique(np.concatenate((y_true, y_hat)))
+		if labels is None:
+			labels = uni
+		dim = len(labels)
+		mat = np.zeros((dim, dim), dtype=int)
 
-	y = y_true
-	for i in range(0, len(y)):
-		if y[i][0] in labels:
-			idx_label = get_idx(labels, y[i][0])
-			if y[i][0] == y_hat[i][0]:
-				mat[idx_label][idx_label] += 1
-			elif y[i][0] != y_hat[i][0] and y_hat[i][0] in labels:
-				mat[idx_label][get_idx(labels, y_hat[i][0])] += 1
-	if df_option is False:
-		return mat
-	return pd.DataFrame(mat, columns=labels, index=labels)
+		y = y_true
+		for i in range(0, len(y)):
+			if y[i][0] in labels:
+				idx_label = get_idx(labels, y[i][0])
+				if y[i][0] == y_hat[i][0]:
+					mat[idx_label][idx_label] += 1
+				elif y[i][0] != y_hat[i][0] and y_hat[i][0] in labels:
+					mat[idx_label][get_idx(labels, y_hat[i][0])] += 1
+		if df_option is False:
+			return mat
+		return pd.DataFrame(mat, columns=labels, index=labels)
+	except:
+		return None
 	# Df options true
