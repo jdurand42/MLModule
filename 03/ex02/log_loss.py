@@ -25,6 +25,6 @@ def log_loss_(y, y_hat, eps=1e-15):
 	if y.shape[1] != 1 or y.shape != y_hat.shape:
 		return None
 
-	j = (y * np.log(y_hat + eps) + (1 - y) * np.log(1 - (y_hat + eps)))
+	j = (y * np.log(y_hat + eps) + (1 - y) * np.log(1 - y_hat + eps))
 	j = -j.mean()
 	return j
