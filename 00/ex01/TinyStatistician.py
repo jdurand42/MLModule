@@ -22,10 +22,11 @@ class TinyStatistician:
 		# Demi some ou pas ????
 		b = list(x)
 		b.sort()
-		if len(b) % 2 != 0:
-			return float(b[len(b) // 2])
-		else:
-			return float((b[len(b) // 2] + b[len(b) // 2 - 1]) / 2)
+		return self.percentile(x, 50)
+		# if len(b) % 2 != 0:
+			# return float(b[len(b) // 2])
+		# else:
+			# return float((b[len(b) // 2] + b[len(b) // 2 - 1]) / 2)
 
 	def quartile(self, x):
 		if self.__check_input(x) == False:

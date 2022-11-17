@@ -129,3 +129,28 @@ m = Matrix([[10], [10], [10]])
 print(str(m + v))
 print(str(v + m))
 # print(2 + v)
+
+print("\nTranspose:")
+print(str(m))
+m.T()
+print(m)
+
+m = Matrix((3, 2))
+print(m)
+print(m.T())
+
+v = Vector([[1 , 2, 3]])
+print(v)
+print(v.T())
+
+v2 = v
+print("\nDOT")
+print(v)
+print(v2)
+print(v.dot(v2))
+
+v = Vector([[1], [2], [3]])
+v2 = Vector([[1], [2], [3]])
+print(v)
+print(v2)
+print(v.dot(v2))

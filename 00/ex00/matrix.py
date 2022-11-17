@@ -118,6 +118,23 @@ class Matrix():
 			for j in range(0, len(self.data[i])):
 				b[i].append(other / self.data[i][j])
 		return Matrix(b)
+	
+	def __repr__(self):
+		return "Matix(<shape: tuple>)\nMatrix(<values: list>)"
+	
+	def T(self):
+		new_shape = (self.shape[1], self.shape[0])
+		t = []
+		for i in range(0, new_shape[0]):
+			b = []
+			for j in range(0, new_shape[1]):
+				b.append(0)
+			t.append(b)
+
+		for i in range(0, self.shape[0]):
+			for j in range(0, self.shape[1]):
+				t[j][i] = self.data[i][j]
+		return Matrix(t)
 
 class Vector(Matrix):
 	def __init__(self, arg):
@@ -160,6 +177,12 @@ class Vector(Matrix):
 
 	def __truediv__(self, other):
 		return Vector(super().__truediv__(other).data)
+	
+	def T(self):
+		return Vector(super().T().data)
 
-	def __rtruediv__(self, other):
-		return Vector(super().__rtruediv__(other).data)
+	def dot(self, other):
+		# if isinstance(other, Vector) == False or self.shape != other.shape:
+			# raise ValueError("Error: vector must match")
+		print(super().__mul__(other.T()).data)
+		return Vector(super().__mul__(other.T()).data)

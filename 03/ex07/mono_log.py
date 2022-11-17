@@ -77,7 +77,6 @@ def plot_a_scatter(x, y, y_pred, planet_code, features):
 	plt.show()
 
 
-
 if __name__=="__main__":
 	X = get_data("./solar_system_census.csv")
 	Y = get_data("./solar_system_census_planets.csv")
