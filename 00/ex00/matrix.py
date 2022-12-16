@@ -1,5 +1,8 @@
 
 class Matrix():
+	'''
+		A Matrix class
+	'''
 	# self.data = []
 	# self.shape = ()
 	def __init__(self, arg):
@@ -11,17 +14,25 @@ class Matrix():
 				self.data = arg
 				self.shape = (len(arg), len(arg[0]))
 				for el in self.data:
+					for x in el:
+						if isinstance(x, (float, int)) == False:
+							raise TypeError("Error: Shape must be correct")
 					if len(el) != self.shape[1]:
-						raise Exception("Error: Shape must be correct")
+						raise TypeError("Error: Shape must be correct")
+				# print([len(arg) for a in arg])
+				# if len([len(arg) for a in arg]) != 2:
+					# raise TypeError("Error: Shape must be correct")
 			elif isinstance(arg, tuple):
 				self.shape = arg
-				if len(arg) != 2:
-					raise Exception("Error: Shape must be correct: (m, n)")
+				if len(arg) != 2 or arg[0] <= 0 or arg[1] <= 0:
+					raise TypeError("Error: Shape must be correct: (m, n)")
 				for i in range(0, arg[0]):
 					b = []
 					for j in range(0, arg[1]):
 						b.append(0)
 					self.data.append(b)
+			else:
+				raise TypeError("Error: invalid init parameter, must be tuple or list [[]]")
 		except:
 			raise TypeError("Error: incorrect parameters for Matrix")
 
@@ -43,6 +54,10 @@ class Matrix():
 
 	def __radd__(self, other):
 		# Not implemented if object is not a Matrix or vector, doesn't throw right error
+		if isinstance(other, Matrix) == False:
+			raise TypeError("Error: Invalid opperand")
+		if other.shape != self.shape:
+			raise TypeError("Error: Can only add matrix of the same dimensions")
 		return self.__add__(other)
 
 	def __sub__(self, other):
@@ -59,7 +74,13 @@ class Matrix():
 		return Matrix(b)
 
 	def __rsub__(self, other):
-		return self.__sub__(other)
+		# A verifier
+		# return other.sub(self)
+		if isinstance(other, Matrix) == False:
+			raise TypeError("Error: Invalid opperand")
+		if other.shape != self.shape:
+			raise TypeError("Error: Can only add matrix of the same dimensions")
+		return other.__sub__(self)
 
 	def __opscalar__(self, n, mult=True):
 		b = []
@@ -74,7 +95,8 @@ class Matrix():
 
 	def _mul_mat_mat(self, other):
 		if self.shape[1] != other.shape[0]:
-			raise ValueError("Error: Mat mat mul works only on (m * n) and (n * p) shapes")
+			# print("la")
+			raise TypeError("Error: Mat mat mul works only on (m * n) and (n * p) shapes")
 		ret = Matrix((self.shape[0], other.shape[1]))
 		for i in range(0, len(self.data)):
 			for j in range(0, len(other.data[0])):
@@ -82,27 +104,27 @@ class Matrix():
 					ret.data[i][j] += self.data[i][k] * other.data[k][j]
 		return ret
 
-	def _mul_mat_vec(self, other):
-		# print(self.shape)
-		# print(other.shape)
-		if self.shape[1] != other.shape[0] or other.shape[1] != 1:
-			if self.shape[0] != other.shape[1] or self.shape[1] != 1:
-				raise ValueError("Error: Mat vul mul works only on (m * n) mat and (n * 1) vec shapes")
-		# print(type(self))
-		return self._mul_mat_mat(other)
-
 	def __mul__(self, other):
 		if isinstance(other, (float, int)):
 			return self.__opscalar__(other)
-		elif isinstance(other, Vector):
-			return self._mul_mat_vec(other)
+		# elif isinstance(other, Vector):
+			# return self._mul_mat_vec(other)
 		elif isinstance(other, Matrix):
+			# print(self.shape, other.shape)
 			return self._mul_mat_mat(other)
 		else:
 			raise TypeError("Error: Unsupported type in Matrix multiplication")
 
 	def __rmul__(self, other):
-		return self.__mul__(other)
+		if isinstance(other, (float, int)):
+			return self.__opscalar__(other)
+		# elif isinstance(other, Vector):
+			# return self._mul_mat_vec(other)
+		elif isinstance(other, Matrix):
+			# print(self.shape, other.shape)
+			return other._mul_mat_mat(self)
+		else:
+			raise TypeError("Error: Unsupported type in Matrix multiplication")
 
 	def __truediv__(self, other):
 		if isinstance(other, (float, int)) == False:
@@ -155,34 +177,59 @@ class Vector(Matrix):
 		# peut check ici si vector
 		return Vector(super().__add__(other).data)
 
-	# def __radd__(self, other):
+	def __radd__(self, other):
 	# 	# peut check ici si vector
-	# 	return Vector(super().__radd__(other).data)
+		return Vector(super().__radd__(other).data)
 
 	def __sub__(self, other):
 		return Vector(super().__sub__(other).data)
 
-	# def __rsub__(self, other):
-	# 	return self.__rsub__(other)
+	def __rsub__(self, other):
+		return Vector(super().__rsub__(other).data)
 
 	def __mul__(self, other):
-		if isinstance(other, Matrix):
-			return other._mul_mat_vec(self)
-		return Vector(super().__mul__(other).data)
-	#
+		# if isinstance(other, Matrix):
+		# 	return other._mul_mat_vec(self)
+		# print(super().__mul__(other).data))
+		r = super().__mul__(other).data
+		try:
+			return Vector(r)
+		except:
+			return Matrix(r)
+
 	def __rmul__(self, other):
-		if isinstance(other, Matrix):
-			return other._mul_mat_vec(self)
-		return Vector(super().__rmul__(other).data)
+		# print(ici)
+		# if isinstance(other, Matrix):
+			# return other._mul_mat_vec(self)
+		r = super().__rmul__(other).data
+		try:
+			return Vector(r)
+		except:
+			return Matrix(r)
+			
 
 	def __truediv__(self, other):
 		return Vector(super().__truediv__(other).data)
+	
+	def __rtruediv__(self, other):
+		return Vector(super().__rtruediv__(other).data)
 	
 	def T(self):
 		return Vector(super().T().data)
 
 	def dot(self, other):
-		# if isinstance(other, Vector) == False or self.shape != other.shape:
-			# raise ValueError("Error: vector must match")
-		print(super().__mul__(other.T()).data)
-		return Vector(super().__mul__(other.T()).data)
+		if isinstance(other, Vector) == False:
+			raise TypeError("Error: vector must match")
+		if self.shape != other.shape:
+			raise TypeError("Error: Shapes must match and be of (m * 1) form")
+		# print(super().__mul__(other.T()).data)
+		res = 0
+		if self.shape[1] == 1:
+			for i in range(self.shape[0]):
+				res += self.data[i][0] * other.data[i][0]
+		elif self.shape[0] == 1:
+			for i in range(self.shape[1]):
+				res += self.data[0][i] * other.data[0][i]		
+		return res
+		
+		# return super().__mul__(other.T()).data
