@@ -48,6 +48,9 @@ class TinyStatistician:
 			return None
 		b = list(x)
 		b.sort()
+		# print(b)
+		print(int(p / 100))
+		print(p / 100)
 		return float(b[int(len(b) * (p / 100))])
 
 	def var(self, x):
@@ -57,7 +60,7 @@ class TinyStatistician:
 		mean = self.mean(x)
 		sum = 0
 		for i in range(0, m):
-			sum += ((x[i] - mean) * (x[i] - mean))
+			sum += ((x[i] - mean) ** 2)
 		return float(sum / m)
 
 	def std(self, x):

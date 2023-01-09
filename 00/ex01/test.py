@@ -94,3 +94,8 @@ test_quartile()
 test_percentile()
 test_var()
 test_std()
+
+print("ici")
+data = [42, 7, 69, 18, 352, 3, 650, 754, 438, 2659]
+sta = TinyStatistician()
+print("10: ", abs(sta.percentile(data, 10)))
